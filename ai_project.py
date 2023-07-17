@@ -5,7 +5,7 @@ class SocialNetwork:
         self.list_of_people = [] # this instance variable is initialized to an empty list when social network is created, 
                                  # you can save objects of people on the network in this list
     ## For more challenge try this
-    def save_social_media(self):
+    #def save_social_media(self):
         # function to save social media to a file on disk 
         # hint: look up how to use python's inbuil json module to turn objects to json
         # you can write this json unto a file on disk
@@ -69,7 +69,7 @@ class Person(SocialNetwork):
     def __init__(self, name, age, password):
         super().__init__()
         self.id = name
-        self.year = age
+        self.age = age
         self.password = password
         self.friendlist = []
         self.receivedmessages = []
@@ -80,6 +80,13 @@ class Person(SocialNetwork):
             #currentaccount = 
             
             #print(f"Name: {name} Age: {age} Birthday: {birthday} Email: {email}") #modify this so that it prints out the information for that specific account (ccurrentaccount)
+    def save_social_media(self):
+        account_dict = vars(loginaccount)
+        account_json = json.dumps(account_dict)
+        with open("AccountInfo.json", "w") as outfile:
+            outfile.write(account_json)
+    def load_account(self):
+        "load account here"
     def add_friend(self, application): #previously add_friend(self, person_object)
         #print("Blueh")
         print("The users that you can currently add as friends are: ")
@@ -93,8 +100,11 @@ class Person(SocialNetwork):
         if friend == loginaccount:
             print("You cannot add yourself as a friend!")
         else:
-            self.friendlist.append(friend)
-            print(f"Friend added! {friend.id} is now your friend.")
+            if friend in self.friendlist:
+                print("You have already added this person as a friend!")
+            elif friend not in self.friendlist:
+                self.friendlist.append(friend)
+                print(f"Friend added! {friend.id} is now your friend.")
         #elif yesorno == 'n':
             #print("Cancelled. Returning to previous screen.")
 
