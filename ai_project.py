@@ -1,4 +1,5 @@
 # A class to hold general system wide social media data and functions. Eg Data objects of all people, Eg functions: Save social media to disk
+#ADD AN AGE RESTRICTION LATER: 15+
 class SocialNetwork:
     def __init__(self):
         self.list_of_people = [] # this instance variable is initialized to an empty list when social network is created, 
@@ -45,56 +46,66 @@ class SocialNetwork:
                 loginaccount = self.list_of_people[accountindex]
                 print(f"The account you are trying to log into is: {loginaccount.id}")
                 confirm = input("Are you sure you want to log into this account? y/n ")
-                if confirm == 'y':
+                if confirm.lower() == 'y':
                     verify = input("Please input the password of the account you are trying to log into: ")
                     if verify == loginaccount.password:
                         print(f"Verification successful. You are now logged in to: {loginaccount.id}")
                     elif verify != loginaccount.password:
                         print(f"Verification failed. Redirecting back to previous page...")
-                if confirm == 'n':
+                if confirm.lower() == 'n':
                     print("Login cancelled.")
             elif accountindex not in range(len(self.list_of_people)):
                 print("The account you are trying to access is not in the database. Please try again.")
             elif len(self.list_of_people) < 1:
                 print("There are no accounts that you can log into. Please create a new account and try again.")
+        return loginaccount
     def getCurrentUser(self):
-        username = input("Please input the username associated with your account: ")
+        username = input("Please input your name: ")
         for users in self.list_of_people:
             if users.id == username:
                 return users
 class Person(SocialNetwork):
     def __init__(self, name, age, password):
+        super().__init__()
         self.id = name
         self.year = age
         self.password = password
         self.friendlist = []
         self.receivedmessages = []
+        self.blocked_users = []
         pass
             #checkforaccount = input("What account would you like to check information for? ")
             #create a program that lets you specify a specific account and then set that account as the variable for current account.
             #currentaccount = 
             
             #print(f"Name: {name} Age: {age} Birthday: {birthday} Email: {email}") #modify this so that it prints out the information for that specific account (ccurrentaccount)
-    def add_friend(self, person_object): #previously add_friend(self, person_object)
-            for acctid in person_object.list_of_people:
-                acctnum = 1
-                acctnum +=1
-                print("The users that you can currently add as friends are: ", acctid.id)
-            yesorno = input("Would you like to add someone as a friend? y/n ")
-            if yesorno == 'y':
-                userchoice = input("Please input the number of the user you would like to add from the list above. The first account in the list is numbered 0. ")
-                friendindex = int(userchoice)
-                friend = person_object.list_of_people[friendindex]
-                self.friendlist.append(friend)
-                print("Friend added!")
-            elif yesorno == 'n':
-                print("Cancelled. Returning to previous screen.")
+    def add_friend(self): #previously add_friend(self, person_object)
+        #print("Blueh")
+        for accounts in self.list_of_people:
+            #print("Bluh")
+            accounting = 1
+            accounting +=1
+            print(f"The users that you can currently add as friends are: ")
+            print(accounts.id)
+        userchoice = input("Please input the number of the user you would like to add from the list above. The first account in the list is numbered 0. ")
+        friend = self.list_of_people[int(userchoice)]
+        if friend == loginaccount:
+            print("You cannot add yourself as a friend!")
+        else:
+            self.friendlist.append(friend)
+            print(f"Friend added! {friend.id} is now your friend.")
+        #elif yesorno == 'n':
+            #print("Cancelled. Returning to previous screen.")
 
         #print("Friend successfuly added.")
-        #print(self.friendlist)
+        #print(self.friendlist2)
 
         #implement adding friend. Hint add to self.friendlist
-            pass
+        #print("Blehehfbsjs")
+
+        pass
+        #print("Blorbo")
+
     # def loginAccount(self):
     #     super().__init__() 
     #     if:
@@ -118,7 +129,8 @@ class Person(SocialNetwork):
                     usernum = 1
                     usernum +=1
                     print("The users that you can currently send messages to are: ", accountid.id)
-            friend = input("Who would you like to receive your message? Please input a number. The first account in the list is numbered 0.")
+            friend = input("Who would you like to receive your message? Please input a number. The first account in the list is numbered 0. ")
+            #make it so that if people are in a list of blocked users, then you cannot send a message to that user.
             friendacctnum = int(friend)
             chosenfriend = self.friendlist[friendacctnum]
             sentmessage = input("What message would you like to send? ")
@@ -128,12 +140,8 @@ class Person(SocialNetwork):
         #put code here in order to send messages to friends and figure out a way to receive messages
         #implement sending message to friend here
     def receive_message(self):
-        choice = print("You have a new message! Would you like to check? y/n")
-        if choice == 'y':
             print(self.receivedmessages) #have this bit print out the message that was sent previously
-        elif choice == 'n':
-            print("You have chosen not to check the message. Returning to previous screen.")
-        pass
+    pass
     def item_getName(self):
         return self.id
     def edit_details(self):
@@ -196,7 +204,6 @@ def accountLogin():
     print('')
 
 #Various import Statements can go here
-from  social_network_classes import SocialNetwork,Person
 import social_network_ui
 
 
@@ -210,8 +217,11 @@ if __name__ == "__main__":
     print("########################################################")
     last_menu = None
     choice = social_network_ui.mainMenu()
+    
 
     while True: 
+
+
         if choice == "1":
             print("\nYou are now in the create account menu")
             #ai_social_network.create_account()
@@ -227,43 +237,46 @@ if __name__ == "__main__":
             while True:
                 if inner_menu_choice == '1':
                     if loggedoff == False:
-                        currentaccount = ai_social_network.getCurrentUser()
-                        currentaccount.edit_details()  #this is still calling the function for a generic person class, link it somehow to the actual account
+                        loginaccount.edit_details()  #this is still calling the function for a generic person class, link it somehow to the actual account
+                        inner_menu_choice = social_network_ui.manageAccountMenu()
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
                 elif inner_menu_choice == '2':
                     if loggedoff == False:
-                        currentaccount = ai_social_network.getCurrentUser()
-                        currentaccount.add_friend()
+                        loginaccount.add_friend()
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
                 elif inner_menu_choice == '3':
                     choices = input("Would you like to check your friends list? y/n ")
-                    if choices == 'y' and loggedoff == False:
-                        currentaccount = ai_social_network.getCurrentUser()
-                        currentaccount.check_friends()
-                    elif choices == 'n' and loggedoff == True:
-                        print("You are not logged into an account. Please log in and try again!")
-                        break
+                    if loggedoff == True:
+                        print("You are not logged into an account. Please log in and try again.")
+                    if loggedoff == False:
+                        if choices == 'y':
+                            loginaccount.check_friends()
+                        elif choices == 'n':
+                            break
                 elif inner_menu_choice == '4':
                     if loggedoff == False:
-                        currentaccount = ai_social_network.getCurrentUser()
-                        currentaccount.receive_message()
+                        #print("Blah")
+                        loginaccount.receive_message()
+                        #print("Bleh")
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
                 elif inner_menu_choice == '5':
-                    if loggedoff == False:
-                        currentaccount = ai_social_network.getCurrentUser()
-                        currentaccount.receive_message()
+                    choice = input("You have a new message! Would you like to check? y/n ")
+                    if choice == 'y' and loggedoff == False:
+                        loginaccount.receive_message()
+                    elif choice == 'n' and loggedoff == False:
+                         break
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
                 elif inner_menu_choice == '6': 
                     if loggedoff == False:
-                        s = 1
+                        loginaccount.block_user()
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
