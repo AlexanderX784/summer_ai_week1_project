@@ -79,16 +79,16 @@ class Person(SocialNetwork):
             #currentaccount = 
             
             #print(f"Name: {name} Age: {age} Birthday: {birthday} Email: {email}") #modify this so that it prints out the information for that specific account (ccurrentaccount)
-    def add_friend(self): #previously add_friend(self, person_object)
+    def add_friend(self, networks): #previously add_friend(self, person_object)
         #print("Blueh")
-        for accounts in self.list_of_people:
+        print("The users that you can currently add as friends are: ")
+        for accounts in networks.list_of_people:
             #print("Bluh")
             accounting = 1
             accounting +=1
-            print(f"The users that you can currently add as friends are: ")
             print(accounts.id)
         userchoice = input("Please input the number of the user you would like to add from the list above. The first account in the list is numbered 0. ")
-        friend = self.list_of_people[int(userchoice)]
+        friend = networks.list_of_people[int(userchoice)]
         if friend == loginaccount:
             print("You cannot add yourself as a friend!")
         else:
@@ -134,13 +134,16 @@ class Person(SocialNetwork):
             friendacctnum = int(friend)
             chosenfriend = self.friendlist[friendacctnum]
             sentmessage = input("What message would you like to send? ")
-            chosenfriend.receivedmessages.append(loginaccount.id, ": ", sentmessage)
+            chosenfriend.receivedmessages.append(f"User {loginaccount.id} said: {sentmessage}")
             #self.friendlist[chosenfriend].receivedmessages.append(loginaccount.id, ": ", sentmessage) alternate code for the line shown above
             print(f"Message sent! Receiver: {chosenfriend.id}")
         #put code here in order to send messages to friends and figure out a way to receive messages
         #implement sending message to friend here
     def receive_message(self):
-            print(self.receivedmessages) #have this bit print out the message that was sent previously
+            if len(self.receivedmessages) < 1:
+                print("You currently have no messages in your inbox. Please try again later.")
+            elif len(self.receivedmessages) >=1:
+                print(self.receivedmessages) #have this bit print out the message that was sent previously
     pass
     def item_getName(self):
         return self.id
@@ -173,7 +176,7 @@ class Person(SocialNetwork):
             for accountids1 in self.friendlist:
                     usernums1 = 1
                     usernums1 +=1
-                    print("The users that you are currently friends with are: ", accountids1.id)
+                    print("The users that you are currently friends with are:", accountids1.id)
         removedfriendname = input("Which friend would you like to remove from the list above? Please select a number. The first name in the list is numbered 0.")
         
 # You can implement user interface functions here.
@@ -244,7 +247,8 @@ if __name__ == "__main__":
                         break
                 elif inner_menu_choice == '2':
                     if loggedoff == False:
-                        loginaccount.add_friend()
+                        loginaccount.add_friend(ai_social_network)
+                        break
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
@@ -261,6 +265,7 @@ if __name__ == "__main__":
                     if loggedoff == False:
                         #print("Blah")
                         loginaccount.receive_message()
+                        break
                         #print("Bleh")
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
@@ -283,6 +288,7 @@ if __name__ == "__main__":
                 elif inner_menu_choice == '7':
                     if loggedoff == False:
                         loginaccount.send_message(loginaccount)
+                        break
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
