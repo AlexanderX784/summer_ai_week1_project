@@ -27,7 +27,7 @@ class SocialNetwork:
         elif len(password) > 4:
             account = Person(name, age, password)
             self.list_of_people.append(account) #the append function is used to save/upload the inputs into a list (in this case, its uploading to self.list_of_people)
-            print("Account successfully created! Welcome to Outstagram!")
+            print("Account successfully created!")
         pass
     #for item in self.list_of_people:
         #if item.id in self.list_of_people:
@@ -117,10 +117,11 @@ class Person(SocialNetwork):
         if len(self.friendlist) < 1:
             print("There are currently no friended users for this account. Add someone as a friend and try again.")
         elif len(self.friendlist) >=1:
+            print("The users that you are currently friends with are:")
             for accountids in self.friendlist:
                     usernums = 1
                     usernums +=1
-                    print("The users that you are currently friends with are: ", accountids.id)
+                    print(accountids.id)
         pass
     def send_message(self, loginaccount):
         if len(self.friendlist) < 1:
@@ -134,10 +135,15 @@ class Person(SocialNetwork):
             #make it so that if people are in a list of blocked users, then you cannot send a message to that user.
             friendacctnum = int(friend)
             chosenfriend = self.friendlist[friendacctnum]
-            sentmessage = input("What message would you like to send? ")
-            chosenfriend.receivedmessages.append(f"User {loginaccount.id} said: {sentmessage}")
+            if loginaccount in chosenfriend.blocked_users:
+                print("This user has blocked you. You cannot send messages to this user unless you are unblocked by this user.")
+            elif loginaccount not in chosenfriend.friendlist:
+                print("The user you are trying to send a message to has not friended you. Please try again later!")
+            else:
+                sentmessage = input("What message would you like to send? ")
+                chosenfriend.receivedmessages.append(f"User {loginaccount.id} said: {sentmessage}")
             #self.friendlist[chosenfriend].receivedmessages.append(loginaccount.id, ": ", sentmessage) alternate code for the line shown above
-            print(f"Message sent! Receiver: {chosenfriend.id}")
+                print(f"Message sent! Receiver: {chosenfriend.id}")
         #put code here in order to send messages to friends and figure out a way to receive messages
         #implement sending message to friend here
     def receive_message(self):
@@ -171,14 +177,26 @@ class Person(SocialNetwork):
                     self.password = newpass
                     print(f"Password successfully changed for account: {self.id}")
     def block_user(self):
-        s = 1 #placeholder
+        print("The users that you can currently block are:")
+        for accountidthing in self.friendlist:
+            usernu = 1
+            usernu +=1
+            print(accountidthing.id)
+        blockeduser = input("Who would you like to block from the above list? Please select a number. The firest name in the list is numbered 0.")
+        self.blocked_users.append(self.friendlist[int(blockeduser)])
+        print("User blocked. You will no longer be able to receive messages from this user.")
     def remove_friend(self):
-        if len(self.friendlist) >=1:
+        if len(self.friendlist) < 1:
+            print("You currently have no users friended. Please friend a user and try again!")
+        elif len(self.friendlist) >=1:
+            print("The users that you are currently friends with are:")
             for accountids1 in self.friendlist:
                     usernums1 = 1
                     usernums1 +=1
-                    print("The users that you are currently friends with are:", accountids1.id)
-        removedfriendname = input("Which friend would you like to remove from the list above? Please select a number. The first name in the list is numbered 0.")
+                    print(accountids1.id)
+            removedfriendname = input("Which friend would you like to remove from the list above? Please select a number. The first name in the list is numbered 0.")
+            self.friendlist.remove(self.friendlist[int(removedfriendname)])
+            print("Friend successfully removed.")
         
 # You can implement user interface functions here.
 
@@ -263,26 +281,27 @@ if __name__ == "__main__":
                         elif choices == 'n':
                             break
                 elif inner_menu_choice == '4':
-                    if loggedoff == False:
+                    choice = input("Would you like to check your messages? y/n ")
+                    if choices == 'y' and loggedoff == False:
                         #print("Blah")
                         loginaccount.receive_message()
+                        break
+                    elif choices == 'n' and loggedoff == False:
                         break
                         #print("Bleh")
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
                 elif inner_menu_choice == '5':
-                    choice = input("You have a new message! Would you like to check? y/n ")
-                    if choice == 'y' and loggedoff == False:
-                        loginaccount.receive_message()
-                    elif choice == 'n' and loggedoff == False:
-                         break
-                    elif loggedoff == True:
-                        print("You are not logged into an account. Please log in and try again!")
-                        break
+                    loginaccount.remove_friend()
+                    break
                 elif inner_menu_choice == '6': 
-                    if loggedoff == False:
+                    choicer = input("Would you like to block a user? y/n ")
+                    if choicer == 'y' and loggedoff == False:
                         loginaccount.block_user()
+                        break
+                    elif choicer == 'n' and loggedoff == False:
+                        break
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
