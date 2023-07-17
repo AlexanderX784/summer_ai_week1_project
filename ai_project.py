@@ -27,6 +27,7 @@ class SocialNetwork:
         elif len(password) > 4:
             account = Person(name, age, password)
             self.list_of_people.append(account) #the append function is used to save/upload the inputs into a list (in this case, its uploading to self.list_of_people)
+            print("Account successfully created! Welcome to Outstagram!")
         pass
     #for item in self.list_of_people:
         #if item.id in self.list_of_people:
@@ -79,16 +80,16 @@ class Person(SocialNetwork):
             #currentaccount = 
             
             #print(f"Name: {name} Age: {age} Birthday: {birthday} Email: {email}") #modify this so that it prints out the information for that specific account (ccurrentaccount)
-    def add_friend(self, networks): #previously add_friend(self, person_object)
+    def add_friend(self, application): #previously add_friend(self, person_object)
         #print("Blueh")
         print("The users that you can currently add as friends are: ")
-        for accounts in networks.list_of_people:
+        for accounts in application.list_of_people:
             #print("Bluh")
             accounting = 1
             accounting +=1
             print(accounts.id)
         userchoice = input("Please input the number of the user you would like to add from the list above. The first account in the list is numbered 0. ")
-        friend = networks.list_of_people[int(userchoice)]
+        friend = application.list_of_people[int(userchoice)]
         if friend == loginaccount:
             print("You cannot add yourself as a friend!")
         else:
