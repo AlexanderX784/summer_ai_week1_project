@@ -17,6 +17,7 @@ def manageAccountMenu():
     print("5: Remove Friend")#in progress
     print("6: Block Friend")#in progress
     print("7: Send Message to Friend")#in progress
+    #print("8: Save account")
     print("8. <- Go back ")
     return input("Please Choose a number: ")
 
