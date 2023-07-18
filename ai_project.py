@@ -1,5 +1,6 @@
 # A class to hold general system wide social media data and functions. Eg Data objects of all people, Eg functions: Save social media to disk
 #ADD AN AGE RESTRICTION LATER: 15+
+import json
 class SocialNetwork:
     def __init__(self):
         self.list_of_people = [] # this instance variable is initialized to an empty list when social network is created, 
@@ -80,13 +81,15 @@ class Person(SocialNetwork):
             #currentaccount = 
             
             #print(f"Name: {name} Age: {age} Birthday: {birthday} Email: {email}") #modify this so that it prints out the information for that specific account (ccurrentaccount)
-    def save_social_media(self):
+    def save_account(self):
         account_dict = vars(loginaccount)
         account_json = json.dumps(account_dict)
         with open("AccountInfo.json", "w") as outfile:
             outfile.write(account_json)
     def load_account(self):
-        "load account here"
+        #load in json, wrap it in a dictionary (basically, turn the json back into a dictionary), access different elements 
+        #load account here
+        pass
     def add_friend(self, application): #previously add_friend(self, person_object)
         #print("Blueh")
         print("The users that you can currently add as friends are: ")
@@ -187,14 +190,17 @@ class Person(SocialNetwork):
                     self.password = newpass
                     print(f"Password successfully changed for account: {self.id}")
     def block_user(self):
-        print("The users that you can currently block are:")
-        for accountidthing in self.friendlist:
-            usernu = 1
-            usernu +=1
-            print(accountidthing.id)
-        blockeduser = input("Who would you like to block from the above list? Please select a number. The firest name in the list is numbered 0.")
-        self.blocked_users.append(self.friendlist[int(blockeduser)])
-        print("User blocked. You will no longer be able to receive messages from this user.")
+        if len(self.friendlist) < 1:
+            print("You currently have no users that can be blocked. Please try again later!")
+        elif len(self.friendlist) >= 1:
+            print("The users that you can currently block are:")
+            for accountidthing in self.friendlist:
+                usernu = 1
+                usernu +=1
+                print(accountidthing.id)
+            blockeduser = input("Who would you like to block from the above list? Please select a number. The firest name in the list is numbered 0.")
+            self.blocked_users.append(self.friendlist[int(blockeduser)])
+            print("User blocked. You will no longer be able to receive messages from this user.")
     def remove_friend(self):
         if len(self.friendlist) < 1:
             print("You currently have no users friended. Please friend a user and try again!")
@@ -291,7 +297,7 @@ if __name__ == "__main__":
                         elif choices == 'n':
                             break
                 elif inner_menu_choice == '4':
-                    choice = input("Would you like to check your messages? y/n ")
+                    choices = input("Would you like to check your messages? y/n ")
                     if choices == 'y' and loggedoff == False:
                         #print("Blah")
                         loginaccount.receive_message()
@@ -323,6 +329,13 @@ if __name__ == "__main__":
                         print("You are not logged into an account. Please log in and try again!")
                         break
                 elif inner_menu_choice == "8":
+                    if loggedoff == False:
+                        loginaccount.save_account()
+                        break
+                    elif loggedoff == True:
+                        print("You are not logged into an account. Please log in and try again!")
+                        break
+                elif inner_menu_choice == '9':
                     break
                 else:
                     inner_menu_choice = social_network_ui.manageAccountMenu()
