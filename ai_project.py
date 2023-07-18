@@ -82,13 +82,22 @@ class Person(SocialNetwork):
             
             #print(f"Name: {name} Age: {age} Birthday: {birthday} Email: {email}") #modify this so that it prints out the information for that specific account (ccurrentaccount)
     def save_account(self):
-        account_dict = vars(loginaccount)
-        account_json = json.dumps(account_dict)
-        with open("AccountInfo.json", "w") as outfile:
-            outfile.write(account_json)
+        # account_dict = vars(loginaccount)
+        # account_json = json.dumps(account_dict)
+        # for user in self.list_of_people:
+        #     userdict = {"name": self.id, "age": self.age, "password":self.password}
+        # with open("AccountInfo.json", "w") as outfile:
+        #     outfile.write(account_json)
+        pass
     def load_account(self):
         #load in json, wrap it in a dictionary (basically, turn the json back into a dictionary), access different elements 
         #load account here
+        #with open("AccountInfo.json","r") as file:
+#             loadjson = json.load(file)
+#         jsondict = dict(loadjson)
+#         currentaccount = Person(jsondict["id"], jsondict["age"], jsondict["password"])
+#         currentaccount.friendlist = jsondict["friendlist"]
+#         self.list_of_people.append(currentaccount)
         pass
     def add_friend(self, application): #previously add_friend(self, person_object)
         #print("Blueh")
@@ -328,14 +337,14 @@ if __name__ == "__main__":
                     elif loggedoff == True:
                         print("You are not logged into an account. Please log in and try again!")
                         break
-                elif inner_menu_choice == "8":
-                    if loggedoff == False:
-                        loginaccount.save_account()
-                        break
-                    elif loggedoff == True:
-                        print("You are not logged into an account. Please log in and try again!")
-                        break
-                elif inner_menu_choice == '9':
+                # elif inner_menu_choice == "8":
+                #     if loggedoff == False:
+                #         loginaccount.save_account()
+                #         break
+                #     elif loggedoff == True:
+                #         print("You are not logged into an account. Please log in and try again!")
+                #         break
+                elif inner_menu_choice == '8':
                     break
                 else:
                     inner_menu_choice = social_network_ui.manageAccountMenu()
